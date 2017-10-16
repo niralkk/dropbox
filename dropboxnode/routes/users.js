@@ -1,120 +1,42 @@
 var express = require('express');
-var mysql = require('./mysql');
 var router = express.Router();
+var multer = require('multer');
+var glob = require('glob');
 
-var users = [
-    {
-        username: "Mike",
-        password: "mike123"
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads/')
     },
-    {
-        username: "Tom",
-        password: "tom123"
-    },
-    {
-        username: "John",
-        password: "john123"
-    },
-    {
-        username: "Mac",
-        password: "mac123"
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + '.jpeg')
     }
-];
+});
+
+var upload = multer({storage:storage});
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-    res.send('respond with a resource');
-});
+    var resArr = [];
 
-router.post('/doLogin', function (req, res, next) {
+    glob("public/uploads/*.jpeg", function (er, files) {
 
-    var reqUsername = req.body.username;
-    var reqPassword = req.body.password;
+        var resArr = files.map(function (file) {
+            var imgJSON = {};
+            imgJSON.img = 'uploads/'+file.split('/')[2];
+            imgJSON.cols = 2  ;
+            return imgJSON;
+        });
 
-
-    var getuser = "select * from userdetails where username='"+reqUsername+"' and password='" +reqPassword+"'";
-
-    mysql.fetchdata(function(err, results) {
-        if(err) {
-            throw err;
-        }
-        else 
-        {
-            if(results.length > 0) {
-                console.log("Valid Login");
-                res.status(201).json({message: "Login successful"})
-            }
-            else {
-                console.log("Invalid Login");
-                res.status(401).json({message: "Login failed"});
-            }
-        }  
-    }, getuser);
-
-    // Just checking if the username is in our user's array
-    // var theUser = users.filter(function(user){
-    //     return user.username === reqUsername;
-    // });
-
-    // Check the password
-    // if(theUser.length === 1){
-    //     theUser[0].password === reqPassword &&
-    //     res.status(201).json({message: "Login successful"}) ||
-    //     res.status(401).json({message: "Login failed"});
-    // } else {
-    //     res.status(401).json({message: "Login failed"});
-    // }
-
-
-    // if(theUser.password === reqPassword){
-    //     res.status(201).json({message: "Login successful"});
-    // } else {
-    //     res.status(401).json({message: "Login failed"});
-    // }
+        console.log(resArr);
+        res.status(200).send(resArr);
+    });
 
 });
 
-
-router.post('/doSignup', function (req, res, next) {
-
-    var postsignup  = {
-        Firstname : req.body.firstname,
-        Lastname : req.body.lastname,
-        Email : req.body.email,
-        Username : req.body.username,
-        Password : req.body.password
-    };
-
-    console.log("Insert parameters:"+ postsignup.fname);
-
-    mysql.insertdata(function(err,results) {
-        if(err) {
-            throw err;
-        } 
-    }, postsignup);
-
-    // Just checking if the username is in our user's array
-    // var theUser = users.filter(function(user){
-    //     return user.username === reqUsername;
-    // });
-
-    // Check the password
-    // if(theUser.length === 1){
-    //     theUser[0].password === reqPassword &&
-    //     res.status(201).json({message: "Login successful"}) ||
-    //     res.status(401).json({message: "Login failed"});
-    // } else {
-    //     res.status(401).json({message: "Login failed"});
-    // }
-
-
-    // if(theUser.password === reqPassword){
-    //     res.status(201).json({message: "Login successful"});
-    // } else {
-    //     res.status(401).json({message: "Login failed"});
-    // }
-
-    res.status(201).json({message: "Sign Up successful"});
+router.post('/upload', upload.any(), function (req, res, next) {
+    console.log(req.body);
+    console.log(req.file);
+    res.status(204).end();
 });
 
 

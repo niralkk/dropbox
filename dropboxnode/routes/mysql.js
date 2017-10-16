@@ -4,51 +4,62 @@ var mysql = require('mysql');
 //Put your mysql configuration settings - user, password, database and port
 function getConnection(){
 	var connection = mysql.createConnection({
-		host     : 'localhost',
-		user     : 'root',
-		password : 'niral',
-		database : 'dropbox',
-		port	 : 3306
+	    host     : 'localhost',
+	    user     : 'root',
+	    password : 'niral',
+	    database : 'dropbox',
+	    port	 : 3306
 	});
 	return connection;
 }
-
-
-function insertdata(callback, postdata) {
-
-	var connection = getConnection();
-	console.log(postdata);
-
-	connection.query('INSERT INTO userdetails SET ?', postdata, function (err, result) {
-		if (err) {
-			throw err;
-		}
-		else {
-			console.log("1 user created");
-		}
-	});
-	connection.end();
-}
-
-function fetchdata(callback, sqlquery) {
-
-	console.log("\nSQL Query::"+sqlquery);
-
-	var connection = getConnection();
-
-	connection.query(sqlquery, function(err, rows, fields) {
+function fetchData(callback,sqlQuery){
+	console.log("\nSQL Query::"+sqlQuery);
+	var connection=getConnection();
+	connection.query(sqlQuery, function(err, rows, fields) {
 		if(err){
 			console.log("ERROR: " + err.message);
 		}
 		else 
 		{	// return err or result
-			console.log("DB Results:"+ rows);
-			callback(err, rows);
+			console.log("DB Results:"+rows);
+			callback(err,rows);
+		}
+	});
+	console.log("\nConnection closed..");
+	connection.end();
+}
+function addUser(callback,sqlQuery){
+	console.log("\nSQL Query::"+sqlQuery);
+	var connection=getConnection();
+	connection.query(sqlQuery, function(err, results, fields) {
+		if(err){
+			console.log("ERROR: " + err.message);
+		}
+		else 
+		{	// return err or result
+			console.log("User successfully created");
+			callback(err);
+		}
+	});
+	console.log("\nConnection closed..");
+	connection.end();
+}
+function starfilesql(callback,sqlQuery){
+	console.log("\nSQL Query::"+sqlQuery);
+	var connection=getConnection();
+	connection.query(sqlQuery, function(err, results, fields) {
+		if(err){
+			console.log("ERROR: " + err.message);
+		}
+		else 
+		{	// return err or result
+			console.log("File successfully starred");
+			callback(err);
 		}
 	});
 	console.log("\nConnection closed..");
 	connection.end();
 }	
-
-exports.fetchdata = fetchdata;
-exports.insertdata = insertdata;
+exports.fetchData=fetchData;
+exports.addUser=addUser;
+exports.starfilesql = starfilesql;

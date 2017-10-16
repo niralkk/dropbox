@@ -2,11 +2,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
-import { store } from './_helpers';
+import { store } from './helpers';
 import { App } from './App';
 
-//import { configureBackend } from './_helpers';
-//configureBackend();
+import { configureBackend } from './helpers';
+configureBackend();
 
 render(
     <Provider store={store}>

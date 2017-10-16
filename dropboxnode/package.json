@@ -1,19 +1,26 @@
 {
-  "name": "dropboxnode",
+  "name": "nodefileupload",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "body-parser": "~1.18.2",
+    "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
-    "debug": "~2.6.9",
-    "ejs": "~2.5.7",
-    "express": "~4.15.5",
-    "morgan": "~1.9.0",
-    "serve-favicon": "~2.4.5",
-    "mysql":"*"
+    "debug": "~2.6.3",
+    "crypto": "^1.0.1",
+    "ejs": "^2.5.7",
+    "express": "~4.15.2",
+    "express-session": "^1.15.6",
+    "glob": "^7.1.2",
+    "jade": "~1.11.0",
+    "morgan": "~1.8.1",
+    "multer": "^1.3.0",
+    "mysql": "^2.15.0",
+    "router": "^1.3.2",
+    "serve-favicon": "~2.4.2",
+    "mv":"*"
   }
 }
