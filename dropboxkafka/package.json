@@ -1,0 +1,20 @@
+{
+  "name": "dropboxkafka",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "fs": "0.0.1-security",
+    "kafka-node": "^2.2.3",
+    "mongodb": "^2.2.31",
+    "monk": "^6.0.5",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  }
+}
